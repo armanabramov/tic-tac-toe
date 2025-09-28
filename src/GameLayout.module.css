@@ -1,0 +1,11 @@
+.game {
+	width: min(420px, 96vw);
+	background: var(--surface);
+	border-radius: 14px;
+	padding: 20px;
+	box-shadow: 0 8px 24px rgba(15, 23, 36, 0.06);
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	color: var(--accent);
+}

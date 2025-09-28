@@ -1,0 +1,11 @@
+.title {
+	margin: 0;
+	font-size: 20px;
+	letter-spacing: -0.2px;
+	color: var(--accent);
+}
+
+.status {
+	color: var(--muted);
+	font-size: 14px;
+}
