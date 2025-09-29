@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styles from './FieldLayout.module.css';
 
 export const FieldLayout = ({ field, handleCellClick, handleRestartClick }) => {
@@ -22,4 +23,10 @@ export const FieldLayout = ({ field, handleCellClick, handleRestartClick }) => {
 			</button>
 		</>
 	);
+};
+
+FieldLayout.propTypes = {
+	field: PropTypes.arrayOf(PropTypes.string).isRequired,
+	handleCellClick: PropTypes.func.isRequired,
+	handleRestartClick: PropTypes.func.isRequired,
 };

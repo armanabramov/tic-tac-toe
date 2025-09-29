@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { GameLayout } from './GameLayout';
 
 const Game = () => {
@@ -18,6 +19,17 @@ const Game = () => {
 			setIsDraw={setIsDraw}
 		/>
 	);
+};
+
+Game.propTypes = {
+	field: PropTypes.arrayOf(PropTypes.string),
+	setField: PropTypes.func,
+	currentPlayer: PropTypes.string,
+	setCurrentPlayer: PropTypes.func,
+	isGameEnded: PropTypes.bool,
+	setIsGameEnded: PropTypes.func,
+	isDraw: PropTypes.bool,
+	setIsDraw: PropTypes.func,
 };
 
 export default Game;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { FieldLayout } from './FieldLayout';
 
 export const Field = ({
@@ -57,4 +58,14 @@ export const Field = ({
 			handleRestartClick={handleRestartClick}
 		/>
 	);
+};
+
+Field.propTypes = {
+	field: PropTypes.arrayOf(PropTypes.string).isRequired,
+	setField: PropTypes.func.isRequired,
+	currentPlayer: PropTypes.string.isRequired,
+	setCurrentPlayer: PropTypes.func.isRequired,
+	isGameEnded: PropTypes.bool.isRequired,
+	setIsGameEnded: PropTypes.func.isRequired,
+	setIsDraw: PropTypes.func.isRequired,
 };
