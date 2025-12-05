@@ -5,20 +5,21 @@ export const FieldLayout = ({ field, handleCellClick, handleRestartClick }) => {
 	return (
 		<>
 			<div className={styles.board}>
-				{field.map((cell, index) => (
-					<button
-						key={index}
-						className={`${styles.cell} ${field[index] === 'X' ? styles.x : field[index] === 'O' ? styles.o : ''}`}
-						onClick={() => handleCellClick(index)}
-					>
-						{cell}
-					</button>
-				))}
+				{field.map((cell, index) => {
+					const cellClass = cell === 'X' ? styles.x : cell === 'O' ? styles.o : '';
+					return (
+						<button
+							key={index}
+							type="button"
+							className={`${styles.cell} ${cellClass}`}
+							onClick={() => handleCellClick(index)}
+						>
+							{cell}
+						</button>
+					);
+				})}
 			</div>
-			<button
-				className={styles.restartButton}
-				onClick={handleRestartClick}
-			>
+			<button type="button" className={styles.restartButton} onClick={handleRestartClick}>
 				Начать заново
 			</button>
 		</>

@@ -1,21 +1,26 @@
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import { FieldLayout } from './FieldLayout';
+import store from '../../store';
+import { actionTypes } from '../../reducer';
 
-export const Field = ({
-	field,
-	setField,
-	currentPlayer,
-	setCurrentPlayer,
-	isGameEnded,
-	setIsGameEnded,
-	setIsDraw,
-}) => {
+export const Field = () => {
+	const [state, setState] = useState(store.getState());
+
+	useEffect(() => {
+		const unsubscribe = store.subscribe(() => {
+			setState(store.getState());
+		});
+		return unsubscribe;
+	}, []);
+
+	const { field, currentPlayer, isGameEnded } = state;
+
 	const handleCellClick = (index) => {
-		if (isGameEnded || field[index] !== '') return;
+		const s = store.getState();
+		if (s.isGameEnded || s.field[index] !== '') return;
 
-		const newField = [...field];
-		newField[index] = currentPlayer;
-		setField(newField);
+		const newField = [...s.field];
+		newField[index] = s.currentPlayer;
 
 		const WIN_PATTERNS = [
 			[0, 1, 2],
@@ -27,28 +32,30 @@ export const Field = ({
 			[0, 4, 8],
 			[2, 4, 6],
 		];
+
 		const win = WIN_PATTERNS.some(
 			([a, b, c]) =>
-				newField[a] &&
-				newField[a] === newField[b] &&
-				newField[a] === newField[c],
+				newField[a] && newField[a] === newField[b] && newField[a] === newField[c],
 		);
 
+		store.dispatch({ type: actionTypes.SET_FIELD, payload: newField });
+
 		if (win) {
-			setIsGameEnded(true);
+			store.dispatch({ type: actionTypes.SET_IS_GAME_ENDED, payload: true });
 		} else if (!newField.includes('')) {
-			setIsDraw(true);
-			setIsGameEnded(true);
+			store.dispatch({ type: actionTypes.SET_IS_DRAW, payload: true });
+			store.dispatch({ type: actionTypes.SET_IS_GAME_ENDED, payload: true });
 		} else {
-			setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+			const next = s.currentPlayer === 'X' ? 'O' : 'X';
+			store.dispatch({
+				type: actionTypes.SET_CURRENT_PLAYER,
+				payload: next,
+			});
 		}
 	};
 
 	const handleRestartClick = () => {
-		setField(Array(9).fill(''));
-		setCurrentPlayer('X');
-		setIsGameEnded(false);
-		setIsDraw(false);
+		store.dispatch({ type: actionTypes.RESTART_GAME });
 	};
 
 	return (
@@ -58,14 +65,4 @@ export const Field = ({
 			handleRestartClick={handleRestartClick}
 		/>
 	);
-};
-
-Field.propTypes = {
-	field: PropTypes.arrayOf(PropTypes.string).isRequired,
-	setField: PropTypes.func.isRequired,
-	currentPlayer: PropTypes.string.isRequired,
-	setCurrentPlayer: PropTypes.func.isRequired,
-	isGameEnded: PropTypes.bool.isRequired,
-	setIsGameEnded: PropTypes.func.isRequired,
-	setIsDraw: PropTypes.func.isRequired,
 };
