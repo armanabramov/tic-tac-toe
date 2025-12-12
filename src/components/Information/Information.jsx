@@ -1,18 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectIsDraw, selectCurrentPlayer, selectIsGameEnded } from '../../selectors';
 import { InformationLayout } from './InformationLayout.jsx';
-import store from '../../store';
 
 export const Information = () => {
-	const [state, setState] = useState(store.getState());
-
-	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setState(store.getState());
-		});
-		return unsubscribe;
-	}, []);
-
-	const { currentPlayer, isGameEnded, isDraw } = state;
+	const currentPlayer = useSelector(selectCurrentPlayer);
+	const isGameEnded = useSelector(selectIsGameEnded);
+	const isDraw = useSelector(selectIsDraw);
 
 	let message = `Ходит: ${currentPlayer}`;
 	if (isDraw) message = 'Ничья!';

@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectField, selectCurrentPlayer, selectIsGameEnded } from '../../selectors';
+import {
+	setCurrentPlayer,
+	setIsDraw,
+	setField,
+	setIsGameEnded,
+	RESET_GAME,
+} from '../../actions';
 import { FieldLayout } from './FieldLayout';
-import store from '../../store';
-import { actionTypes } from '../../reducer';
 
 export const Field = () => {
-	const [state, setState] = useState(store.getState());
-
-	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setState(store.getState());
-		});
-		return () => unsubscribe();
-	}, []);
-
-	const { field, currentPlayer, isGameEnded } = state;
+	const dispatch = useDispatch();
+	const field = useSelector(selectField);
+	const currentPlayer = useSelector(selectCurrentPlayer);
+	const isGameEnded = useSelector(selectIsGameEnded);
 
 	const handleCellClick = (index) => {
-		if (isGameEnded || state.field[index] !== '') return;
+		if (isGameEnded || field[index] !== '') return;
 
-		const newField = [...state.field];
+		const newField = [...field];
 		newField[index] = currentPlayer;
 
 		const WIN_PATTERNS = [
@@ -37,24 +37,21 @@ export const Field = () => {
 				newField[a] && newField[a] === newField[b] && newField[a] === newField[c],
 		);
 
-		store.dispatch({ type: actionTypes.SET_FIELD, payload: newField });
+		dispatch(setField(newField));
 
 		if (win) {
-			store.dispatch({ type: actionTypes.SET_IS_GAME_ENDED, payload: true });
+			dispatch(setIsGameEnded(true));
 		} else if (!newField.includes('')) {
-			store.dispatch({ type: actionTypes.SET_IS_DRAW, payload: true });
-			store.dispatch({ type: actionTypes.SET_IS_GAME_ENDED, payload: true });
+			dispatch(setIsDraw(true));
+			dispatch(setIsGameEnded(true));
 		} else {
 			const next = currentPlayer === 'X' ? 'O' : 'X';
-			store.dispatch({
-				type: actionTypes.SET_CURRENT_PLAYER,
-				payload: next,
-			});
+			dispatch(setCurrentPlayer(next));
 		}
 	};
 
 	const handleRestartClick = () => {
-		store.dispatch({ type: actionTypes.RESTART_GAME });
+		dispatch(RESET_GAME);
 	};
 
 	return (
