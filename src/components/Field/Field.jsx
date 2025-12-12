@@ -10,17 +10,16 @@ export const Field = () => {
 		const unsubscribe = store.subscribe(() => {
 			setState(store.getState());
 		});
-		return unsubscribe;
+		return () => unsubscribe();
 	}, []);
 
 	const { field, currentPlayer, isGameEnded } = state;
 
 	const handleCellClick = (index) => {
-		const s = store.getState();
-		if (s.isGameEnded || s.field[index] !== '') return;
+		if (isGameEnded || state.field[index] !== '') return;
 
-		const newField = [...s.field];
-		newField[index] = s.currentPlayer;
+		const newField = [...state.field];
+		newField[index] = currentPlayer;
 
 		const WIN_PATTERNS = [
 			[0, 1, 2],
@@ -46,7 +45,7 @@ export const Field = () => {
 			store.dispatch({ type: actionTypes.SET_IS_DRAW, payload: true });
 			store.dispatch({ type: actionTypes.SET_IS_GAME_ENDED, payload: true });
 		} else {
-			const next = s.currentPlayer === 'X' ? 'O' : 'X';
+			const next = currentPlayer === 'X' ? 'O' : 'X';
 			store.dispatch({
 				type: actionTypes.SET_CURRENT_PLAYER,
 				payload: next,

@@ -1,4 +1,3 @@
-// src/GameLayout.jsx
 import styles from './GameLayout.module.css';
 import { Information } from './components/Information/Information.jsx';
 import { Field } from './components/Field/Field.jsx';
