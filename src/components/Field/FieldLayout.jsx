@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import styles from './FieldLayout.module.css';
 
-export const FieldLayout = ({ field, handleCellClick, handleRestartClick }) => {
+export const FieldLayout = ({ field, handleCellClick }) => {
 	return (
 		<>
 			<div className={styles.board}>
@@ -19,9 +19,6 @@ export const FieldLayout = ({ field, handleCellClick, handleRestartClick }) => {
 					);
 				})}
 			</div>
-			<button type="button" className={styles.restartButton} onClick={handleRestartClick}>
-				Начать заново
-			</button>
 		</>
 	);
 };
@@ -29,5 +26,4 @@ export const FieldLayout = ({ field, handleCellClick, handleRestartClick }) => {
 FieldLayout.propTypes = {
 	field: PropTypes.arrayOf(PropTypes.string).isRequired,
 	handleCellClick: PropTypes.func.isRequired,
-	handleRestartClick: PropTypes.func.isRequired,
 };

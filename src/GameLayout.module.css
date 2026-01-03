@@ -9,3 +9,32 @@
 	gap: 16px;
 	color: var(--accent);
 }
+
+.restartButton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin: 10px auto 0;
+	padding: 10px;
+	width: 80%;
+	height: auto;
+	border-radius: 8px;
+	border: 1px solid rgba(15, 23, 36, 0.06);
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 18px;
+	line-height: 1;
+
+	background: linear-gradient(135deg, #f87171 0%, #60a5fa 100%);
+	color: #ffffff;
+	box-shadow: 0 6px 12px rgba(15, 23, 36, 0.06);
+	transition:
+		transform 0.12s ease,
+		box-shadow 0.12s ease,
+		filter 0.12s ease;
+}
+
+.restartButton:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 10px 22px rgba(15, 23, 36, 0.08);
+}

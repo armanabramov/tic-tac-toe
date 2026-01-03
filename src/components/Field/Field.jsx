@@ -50,15 +50,5 @@ export const Field = () => {
 		}
 	};
 
-	const handleRestartClick = () => {
-		dispatch(RESET_GAME);
-	};
-
-	return (
-		<FieldLayout
-			field={field}
-			handleCellClick={handleCellClick}
-			handleRestartClick={handleRestartClick}
-		/>
-	);
+	return <FieldLayout field={field} handleCellClick={handleCellClick} />;
 };
