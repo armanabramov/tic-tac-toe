@@ -1,21 +1,13 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { selectField, selectCurrentPlayer, selectIsGameEnded } from '../../selectors';
-import {
-	setCurrentPlayer,
-	setIsDraw,
-	setField,
-	setIsGameEnded,
-	RESET_GAME,
-} from '../../actions';
-import { FieldLayout } from './FieldLayout';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { setCurrentPlayer, setIsDraw, setField, setIsGameEnded } from '../../actions';
+import { FieldLayout } from './FieldLayout.jsx';
 
-export const Field = () => {
-	const dispatch = useDispatch();
-	const field = useSelector(selectField);
-	const currentPlayer = useSelector(selectCurrentPlayer);
-	const isGameEnded = useSelector(selectIsGameEnded);
+class Field extends Component {
+	handleCellClick = (index) => {
+		const { field, currentPlayer, isGameEnded } = this.props;
+		const { setField, setCurrentPlayer, setIsDraw, setIsGameEnded } = this.props;
 
-	const handleCellClick = (index) => {
 		if (isGameEnded || field[index] !== '') return;
 
 		const newField = [...field];
@@ -37,18 +29,36 @@ export const Field = () => {
 				newField[a] && newField[a] === newField[b] && newField[a] === newField[c],
 		);
 
-		dispatch(setField(newField));
+		setField(newField);
 
 		if (win) {
-			dispatch(setIsGameEnded(true));
+			setIsGameEnded(true);
 		} else if (!newField.includes('')) {
-			dispatch(setIsDraw(true));
-			dispatch(setIsGameEnded(true));
+			setIsDraw(true);
+			setIsGameEnded(true);
 		} else {
 			const next = currentPlayer === 'X' ? 'O' : 'X';
-			dispatch(setCurrentPlayer(next));
+			setCurrentPlayer(next);
 		}
 	};
 
-	return <FieldLayout field={field} handleCellClick={handleCellClick} />;
-};
+	render() {
+		const { field } = this.props;
+		return <FieldLayout field={field} handleCellClick={this.handleCellClick} />;
+	}
+}
+
+const mapStateToProps = (state) => ({
+	field: state.field,
+	currentPlayer: state.currentPlayer,
+	isGameEnded: state.isGameEnded,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	setField: (field) => dispatch(setField(field)),
+	setCurrentPlayer: (player) => dispatch(setCurrentPlayer(player)),
+	setIsDraw: (value) => dispatch(setIsDraw(value)),
+	setIsGameEnded: (value) => dispatch(setIsGameEnded(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Field);

@@ -1,9 +1,12 @@
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './InformationLayout.module.css';
 
-export const InformationLayout = ({ message }) => {
-	return <h1 className={styles.title}>{message}</h1>;
-};
+export class InformationLayout extends Component {
+	render() {
+		const { message } = this.props;
+		return <h1 className="m-0 text-[20px] tracking-[-0.2px] text-accent">{message}</h1>;
+	}
+}
 
 InformationLayout.propTypes = {
 	message: PropTypes.string.isRequired,
